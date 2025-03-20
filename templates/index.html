@@ -1,0 +1,186 @@
+{% extends 'base.html' %}
+
+{% block title %}Home - DDoS Attack Detection and Mitigation{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row align-items-center py-5">
+        <div class="col-lg-6">
+            <h1 class="display-4 fw-bold">DDoS Attack Detection and Mitigation</h1>
+            <p class="lead">A comprehensive solution to detect and mitigate Distributed Denial of Service attacks in real-time.</p>
+            <p>This web interface provides access to powerful machine learning tools for network traffic analysis and attack detection, helping protect your infrastructure from malicious traffic.</p>
+            <div class="d-grid gap-2 d-md-flex justify-content-md-start mt-4">
+                <a href="{{ url_for('detection') }}" class="btn btn-primary btn-lg px-4 me-md-2">
+                    <i class="fas fa-search me-2"></i>Start Detection
+                </a>
+                <a href="{{ url_for('documentation') }}" class="btn btn-outline-secondary btn-lg px-4">
+                    <i class="fas fa-book me-2"></i>Learn More
+                </a>
+            </div>
+        </div>
+        <div class="col-lg-6 d-flex justify-content-center">
+            <div class="position-relative">
+                <div class="shadow-lg rounded p-4 bg-light text-center" style="width: 380px;">
+                    <i class="fas fa-shield-alt text-primary mb-3" style="font-size: 4rem;"></i>
+                    <h3>Network Protection</h3>
+                    <p>Advanced analytics to safeguard your network from DDoS threats</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mt-5 mb-4">
+        <div class="col-12 text-center">
+            <h2 class="section-heading">Key Features</h2>
+            <hr class="w-25 mx-auto">
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-4 mb-4">
+            <div class="card h-100 border-0 shadow-sm">
+                <div class="card-body text-center p-4">
+                    <div class="feature-icon bg-primary bg-gradient text-white rounded-circle mb-3">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <h4 class="card-title">Traffic Analysis</h4>
+                    <p class="card-text">Real-time monitoring and analysis of network traffic patterns to identify anomalies and potential threats.</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-lg-4 mb-4">
+            <div class="card h-100 border-0 shadow-sm">
+                <div class="card-body text-center p-4">
+                    <div class="feature-icon bg-success bg-gradient text-white rounded-circle mb-3">
+                        <i class="fas fa-brain"></i>
+                    </div>
+                    <h4 class="card-title">ML-Based Detection</h4>
+                    <p class="card-text">Multiple machine learning algorithms to accurately detect various types of DDoS attacks with high precision.</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-lg-4 mb-4">
+            <div class="card h-100 border-0 shadow-sm">
+                <div class="card-body text-center p-4">
+                    <div class="feature-icon bg-danger bg-gradient text-white rounded-circle mb-3">
+                        <i class="fas fa-fire-extinguisher"></i>
+                    </div>
+                    <h4 class="card-title">Automated Mitigation</h4>
+                    <p class="card-text">Swift response mechanisms to counter attacks, including traffic filtering, rate limiting, and IP blocking.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mt-5 mb-4">
+        <div class="col-12 text-center">
+            <h2 class="section-heading">How It Works</h2>
+            <hr class="w-25 mx-auto">
+        </div>
+    </div>
+
+    <div class="row align-items-center mb-5">
+        <div class="col-md-6">
+            <div class="card mb-3 bg-light border-0">
+                <div class="card-body">
+                    <h4><i class="fas fa-1 me-2 text-primary"></i> Data Collection</h4>
+                    <p>Network traffic data is collected and preprocessed for analysis.</p>
+                </div>
+            </div>
+            <div class="card mb-3 bg-light border-0">
+                <div class="card-body">
+                    <h4><i class="fas fa-2 me-2 text-primary"></i> Feature Extraction</h4>
+                    <p>Key features are extracted from the traffic data to identify patterns.</p>
+                </div>
+            </div>
+            <div class="card mb-3 bg-light border-0">
+                <div class="card-body">
+                    <h4><i class="fas fa-3 me-2 text-primary"></i> ML-Based Classification</h4>
+                    <p>Machine learning algorithms classify traffic as normal or malicious.</p>
+                </div>
+            </div>
+            <div class="card mb-3 bg-light border-0">
+                <div class="card-body">
+                    <h4><i class="fas fa-4 me-2 text-primary"></i> Mitigation Response</h4>
+                    <p>When attacks are detected, automated mitigation strategies are deployed.</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 text-center">
+            <div class="p-4 bg-white shadow rounded-3">
+                <i class="fas fa-network-wired text-primary mb-3" style="font-size: 5rem;"></i>
+                <h3 class="mb-3">Protection Pipeline</h3>
+                <p>Our comprehensive protection pipeline provides continuous monitoring and defense against DDoS attacks, ensuring your network remains operational even under attack conditions.</p>
+                <a href="{{ url_for('dashboard') }}" class="btn btn-outline-primary mt-2">
+                    View Dashboard
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mt-5 mb-4">
+        <div class="col-12 text-center">
+            <h2 class="section-heading">Get Started</h2>
+            <hr class="w-25 mx-auto">
+            <p class="lead">Begin protecting your network with just a few clicks</p>
+        </div>
+    </div>
+
+    <div class="row mb-5 text-center">
+        <div class="col-md-4 mb-4">
+            <div class="p-4">
+                <i class="fas fa-search fa-3x text-primary mb-3"></i>
+                <h4>Run Detection</h4>
+                <p>Start the DDoS detection process with your preferred algorithm</p>
+                <a href="{{ url_for('detection') }}" class="btn btn-sm btn-primary">
+                    Start Detection
+                </a>
+            </div>
+        </div>
+        <div class="col-md-4 mb-4">
+            <div class="p-4">
+                <i class="fas fa-chart-bar fa-3x text-success mb-3"></i>
+                <h4>View Analytics</h4>
+                <p>Analyze detection results and traffic patterns</p>
+                <a href="{{ url_for('dashboard') }}" class="btn btn-sm btn-success">
+                    Open Dashboard
+                </a>
+            </div>
+        </div>
+        <div class="col-md-4 mb-4">
+            <div class="p-4">
+                <i class="fas fa-shield-alt fa-3x text-danger mb-3"></i>
+                <h4>Apply Mitigation</h4>
+                <p>Implement protective measures against detected threats</p>
+                <a href="{{ url_for('mitigation') }}" class="btn btn-sm btn-danger">
+                    Configure Mitigation
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_css %}
+<style>
+    .feature-icon {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 3rem;
+        height: 3rem;
+        font-size: 1.5rem;
+    }
+    
+    .shadow-sm {
+        transition: all 0.3s;
+    }
+    
+    .shadow-sm:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15) !important;
+    }
+</style>
+{% endblock %}

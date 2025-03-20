@@ -1,0 +1,242 @@
+{% extends 'base.html' %}
+
+{% block title %}Dashboard - DDoS Attack Detection and Mitigation{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row mb-4">
+        <div class="col-12">
+            <h1 class="mb-3">Dashboard</h1>
+            <p class="lead">Monitor network traffic, view detection results, and analyze security metrics.</p>
+            <hr>
+        </div>
+    </div>
+
+    <!-- Stats Cards -->
+    <div class="row mb-4">
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card border-left-primary shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                                Total Packets
+                            </div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{ results.total_packets }}</div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-network-wired fa-2x text-gray-300"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card border-left-success shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
+                                Normal Traffic
+                            </div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{ results.normal_packets }}</div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-check-circle fa-2x text-gray-300"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card border-left-danger shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-danger text-uppercase mb-1">
+                                DDoS Traffic
+                            </div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{ results.ddos_packets }}</div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-exclamation-triangle fa-2x text-gray-300"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card border-left-info shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
+                                Detection Rate
+                            </div>
+                            <div class="row no-gutters align-items-center">
+                                <div class="col-auto">
+                                    <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">{{ results.detection_rate }}%</div>
+                                </div>
+                                <div class="col">
+                                    <div class="progress progress-sm mr-2">
+                                        <div class="progress-bar bg-info" role="progressbar" style="width: {{ results.detection_rate }}%"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-clipboard-list fa-2x text-gray-300"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Additional Details Row -->
+    <div class="row mb-4">
+        <div class="col-lg-6 mb-4">
+            <div class="card shadow mb-4">
+                <div class="card-header py-3">
+                    <h6 class="m-0 font-weight-bold text-primary">Traffic Comparison</h6>
+                </div>
+                <div class="card-body">
+                    <p>Normal vs. DDoS traffic analysis over time</p>
+                    <div class="text-center">
+                        <img class="img-fluid" src="data:image/png;base64,{{ bar_plot }}" alt="Traffic Comparison">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-6 mb-4">
+            <div class="card shadow mb-4">
+                <div class="card-header py-3">
+                    <h6 class="m-0 font-weight-bold text-primary">Traffic Trends</h6>
+                </div>
+                <div class="card-body">
+                    <p>Trend analysis of normal and malicious traffic patterns</p>
+                    <div class="text-center">
+                        <img class="img-fluid" src="data:image/png;base64,{{ line_plot }}" alt="Traffic Trends">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Detection Performance -->
+    <div class="row">
+        <div class="col-12 mb-4">
+            <div class="card shadow mb-4">
+                <div class="card-header py-3">
+                    <h6 class="m-0 font-weight-bold text-primary">Detection Performance</h6>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-bordered" id="detectionTable" width="100%" cellspacing="0">
+                            <thead>
+                                <tr>
+                                    <th>Metric</th>
+                                    <th>Value</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Detection Rate</td>
+                                    <td>{{ results.detection_rate }}%</td>
+                                    <td>
+                                        {% if results.detection_rate > 90 %}
+                                            <span class="badge bg-success">Excellent</span>
+                                        {% elif results.detection_rate > 75 %}
+                                            <span class="badge bg-primary">Good</span>
+                                        {% elif results.detection_rate > 60 %}
+                                            <span class="badge bg-warning">Average</span>
+                                        {% else %}
+                                            <span class="badge bg-danger">Poor</span>
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>False Positive Rate</td>
+                                    <td>{{ results.false_positive_rate }}%</td>
+                                    <td>
+                                        {% if results.false_positive_rate < 1 %}
+                                            <span class="badge bg-success">Excellent</span>
+                                        {% elif results.false_positive_rate < 5 %}
+                                            <span class="badge bg-primary">Good</span>
+                                        {% elif results.false_positive_rate < 10 %}
+                                            <span class="badge bg-warning">Average</span>
+                                        {% else %}
+                                            <span class="badge bg-danger">Poor</span>
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>DDoS Traffic Percentage</td>
+                                    <td>{{ (results.ddos_packets / results.total_packets * 100) | round(2) }}%</td>
+                                    <td>
+                                        {% if (results.ddos_packets / results.total_packets * 100) < 5 %}
+                                            <span class="badge bg-success">Low</span>
+                                        {% elif (results.ddos_packets / results.total_packets * 100) < 15 %}
+                                            <span class="badge bg-warning">Moderate</span>
+                                        {% else %}
+                                            <span class="badge bg-danger">High</span>
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Action Buttons -->
+    <div class="row">
+        <div class="col-12 mb-4 text-center">
+            <a href="{{ url_for('detection') }}" class="btn btn-primary me-2">
+                <i class="fas fa-search me-1"></i> Run New Detection
+            </a>
+            <a href="{{ url_for('mitigation') }}" class="btn btn-danger me-2">
+                <i class="fas fa-shield-alt me-1"></i> Configure Mitigation
+            </a>
+            <a href="#" class="btn btn-secondary" onclick="window.print()">
+                <i class="fas fa-print me-1"></i> Print Report
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_css %}
+<style>
+    .border-left-primary {
+        border-left: 0.25rem solid #4e73df !important;
+    }
+    .border-left-success {
+        border-left: 0.25rem solid #1cc88a !important;
+    }
+    .border-left-info {
+        border-left: 0.25rem solid #36b9cc !important;
+    }
+    .border-left-danger {
+        border-left: 0.25rem solid #e74a3b !important;
+    }
+    .text-gray-300 {
+        color: #dddfeb !important;
+    }
+    .text-gray-800 {
+        color: #5a5c69 !important;
+    }
+    @media print {
+        .navbar, .footer, button, .btn {
+            display: none !important;
+        }
+    }
+</style>
+{% endblock %}

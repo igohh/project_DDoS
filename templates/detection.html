@@ -1,0 +1,268 @@
+{% extends 'base.html' %}
+
+{% block title %}Detection - DDoS Attack Detection and Mitigation{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row mb-4">
+        <div class="col-12">
+            <h1 class="mb-3">DDoS Attack Detection</h1>
+            <p class="lead">Configure and run DDoS detection with machine learning algorithms.</p>
+            <hr>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-6 mb-4">
+            <div class="card shadow mb-4">
+                <div class="card-header py-3 d-flex justify-content-between align-items-center">
+                    <h6 class="m-0 font-weight-bold text-primary">Run Detection</h6>
+                    <span class="badge bg-primary">Machine Learning</span>
+                </div>
+                <div class="card-body">
+                    <p>Select a machine learning algorithm to detect DDoS attacks in your network traffic data.</p>
+                    
+                    <form action="{{ url_for('run_detection') }}" method="post">
+                        <div class="mb-3">
+                            <label for="algorithm" class="form-label">Detection Algorithm</label>
+                            <select class="form-select" id="algorithm" name="algorithm" required>
+                                <option value="" selected disabled>-- Select an algorithm --</option>
+                                {% for algorithm in ml_algorithms %}
+                                <option value="{{ algorithm }}">{{ algorithm }}</option>
+                                {% endfor %}
+                            </select>
+                            <div class="form-text">Choose the most suitable algorithm for your detection needs.</div>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label class="form-label">Algorithm Details</label>
+                            <div id="algorithmDetails" class="p-3 bg-light rounded">
+                                <p class="text-muted mb-0">Select an algorithm to view details</p>
+                            </div>
+                        </div>
+                        
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-play me-2"></i>Run Detection
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-lg-6 mb-4">
+            <div class="card shadow mb-4">
+                <div class="card-header py-3">
+                    <h6 class="m-0 font-weight-bold text-primary">Algorithm Comparison</h6>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>Algorithm</th>
+                                    <th>Accuracy</th>
+                                    <th>Speed</th>
+                                    <th>Use Case</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>LR (Logistic Regression)</td>
+                                    <td>
+                                        <div class="progress">
+                                            <div class="progress-bar bg-info" role="progressbar" style="width: 75%"></div>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="progress">
+                                            <div class="progress-bar bg-success" role="progressbar" style="width: 90%"></div>
+                                        </div>
+                                    </td>
+                                    <td>Linear classification, binary outcomes</td>
+                                </tr>
+                                <tr>
+                                    <td>KNN</td>
+                                    <td>
+                                        <div class="progress">
+                                            <div class="progress-bar bg-info" role="progressbar" style="width: 80%"></div>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="progress">
+                                            <div class="progress-bar bg-success" role="progressbar" style="width: 60%"></div>
+                                        </div>
+                                    </td>
+                                    <td>Pattern recognition, anomaly detection</td>
+                                </tr>
+                                <tr>
+                                    <td>SVM</td>
+                                    <td>
+                                        <div class="progress">
+                                            <div class="progress-bar bg-info" role="progressbar" style="width: 85%"></div>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="progress">
+                                            <div class="progress-bar bg-success" role="progressbar" style="width: 70%"></div>
+                                        </div>
+                                    </td>
+                                    <td>High-dimensional data, complex patterns</td>
+                                </tr>
+                                <tr>
+                                    <td>NB (Naive Bayes)</td>
+                                    <td>
+                                        <div class="progress">
+                                            <div class="progress-bar bg-info" role="progressbar" style="width: 70%"></div>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="progress">
+                                            <div class="progress-bar bg-success" role="progressbar" style="width: 95%"></div>
+                                        </div>
+                                    </td>
+                                    <td>Text classification, simple feature sets</td>
+                                </tr>
+                                <tr>
+                                    <td>DT (Decision Tree)</td>
+                                    <td>
+                                        <div class="progress">
+                                            <div class="progress-bar bg-info" role="progressbar" style="width: 78%"></div>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="progress">
+                                            <div class="progress-bar bg-success" role="progressbar" style="width: 85%"></div>
+                                        </div>
+                                    </td>
+                                    <td>Hierarchical decision making, feature importance</td>
+                                </tr>
+                                <tr>
+                                    <td>RF (Random Forest)</td>
+                                    <td>
+                                        <div class="progress">
+                                            <div class="progress-bar bg-info" role="progressbar" style="width: 92%"></div>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="progress">
+                                            <div class="progress-bar bg-success" role="progressbar" style="width: 75%"></div>
+                                        </div>
+                                    </td>
+                                    <td>Ensemble learning, complex datasets</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-12 mb-4">
+            <div class="card shadow mb-4">
+                <div class="card-header py-3">
+                    <h6 class="m-0 font-weight-bold text-primary">Detection Process</h6>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-3 mb-3 mb-md-0 text-center">
+                            <div class="rounded-circle bg-primary text-white d-flex justify-content-center align-items-center mx-auto" style="width: 80px; height: 80px;">
+                                <i class="fas fa-database fa-2x"></i>
+                            </div>
+                            <h5 class="mt-3">Data Collection</h5>
+                            <p class="text-muted">Network traffic data is collected</p>
+                        </div>
+                        <div class="col-md-3 mb-3 mb-md-0 text-center">
+                            <div class="rounded-circle bg-success text-white d-flex justify-content-center align-items-center mx-auto" style="width: 80px; height: 80px;">
+                                <i class="fas fa-cogs fa-2x"></i>
+                            </div>
+                            <h5 class="mt-3">Preprocessing</h5>
+                            <p class="text-muted">Feature extraction and normalization</p>
+                        </div>
+                        <div class="col-md-3 mb-3 mb-md-0 text-center">
+                            <div class="rounded-circle bg-info text-white d-flex justify-content-center align-items-center mx-auto" style="width: 80px; height: 80px;">
+                                <i class="fas fa-brain fa-2x"></i>
+                            </div>
+                            <h5 class="mt-3">ML Classification</h5>
+                            <p class="text-muted">Traffic is analyzed and classified</p>
+                        </div>
+                        <div class="col-md-3 mb-3 mb-md-0 text-center">
+                            <div class="rounded-circle bg-danger text-white d-flex justify-content-center align-items-center mx-auto" style="width: 80px; height: 80px;">
+                                <i class="fas fa-shield-alt fa-2x"></i>
+                            </div>
+                            <h5 class="mt-3">Results & Action</h5>
+                            <p class="text-muted">Detection results and mitigation</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const algorithmSelect = document.getElementById('algorithm');
+    const algorithmDetails = document.getElementById('algorithmDetails');
+    
+    const algorithmInfo = {
+        'LR': {
+            name: 'Logistic Regression',
+            description: 'A statistical method for analyzing a dataset where one or more independent variables determine an outcome. Used for binary classification problems.',
+            strengths: 'Fast training, works well with large datasets, less prone to overfitting.',
+            weaknesses: 'May underperform with complex non-linear relationships.'
+        },
+        'KNN': {
+            name: 'K-Nearest Neighbors',
+            description: 'A non-parametric method used for classification and regression. The output depends on the k closest training examples in the feature space.',
+            strengths: 'Simple implementation, effective with labeled data, adaptable to different domains.',
+            weaknesses: 'Computationally intensive for large datasets, sensitive to irrelevant features.'
+        },
+        'SVM': {
+            name: 'Support Vector Machine',
+            description: 'A supervised learning model that analyzes data for classification and regression. It finds the optimal hyperplane that separates classes.',
+            strengths: 'Effective in high-dimensional spaces, memory efficient, versatile with different kernel functions.',
+            weaknesses: 'Not suitable for large datasets, computationally intensive.'
+        },
+        'NB': {
+            name: 'Naive Bayes',
+            description: 'A family of probabilistic algorithms based on applying Bayes\' theorem with strong independence assumptions between features.',
+            strengths: 'Fast training and prediction, works well with small datasets, handles missing data well.',
+            weaknesses: 'Assumes feature independence, which may not be realistic for network traffic.'
+        },
+        'DT': {
+            name: 'Decision Tree',
+            description: 'A tree-like model where an internal node represents a feature, branches represent decision rules, and leaf nodes represent outcomes.',
+            strengths: 'Easy to understand and interpret, handles both numerical and categorical data.',
+            weaknesses: 'Can create overly complex trees that don\'t generalize well (overfitting).'
+        },
+        'RF': {
+            name: 'Random Forest',
+            description: 'An ensemble learning method that operates by constructing multiple decision trees and outputs the class that is the mode of the classes.',
+            strengths: 'High accuracy, handles large datasets efficiently, reduces overfitting.',
+            weaknesses: 'More complex and computationally intensive than single decision trees.'
+        }
+    };
+    
+    algorithmSelect.addEventListener('change', function() {
+        const selectedAlgorithm = this.value;
+        if (selectedAlgorithm && algorithmInfo[selectedAlgorithm]) {
+            const info = algorithmInfo[selectedAlgorithm];
+            algorithmDetails.innerHTML = `
+                <h5>${info.name}</h5>
+                <p><strong>Description:</strong> ${info.description}</p>
+                <p><strong>Strengths:</strong> ${info.strengths}</p>
+                <p><strong>Weaknesses:</strong> ${info.weaknesses}</p>
+            `;
+        } else {
+            algorithmDetails.innerHTML = '<p class="text-muted mb-0">Select an algorithm to view details</p>';
+        }
+    });
+});
+</script>
+{% endblock %}
