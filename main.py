@@ -19,14 +19,44 @@ logging.basicConfig(level=logging.DEBUG)
 logger = logging.getLogger(__name__)
 
 # Add project directory to path
-repo_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'DDoS-Attack-Detection')
-sys.path.append(repo_dir)
-sys.path.append(os.path.join(repo_dir, 'Codes'))
-sys.path.append(os.path.join(repo_dir, 'Codes/ml'))
+repo_dir = os.path.dirname(os.path.abspath(__file__))
+
+# Check for DDoS-Attack-Detection directory
+ddos_detection_dir = os.path.join(repo_dir, 'DDoS-Attack-Detection')
+ddos_detection_mitigation_dir = os.path.join(repo_dir, 'DDoS-Attack-Detection-and-Mitigation')
+
+# Add all possible paths to sys.path
+if os.path.exists(ddos_detection_dir):
+    sys.path.append(ddos_detection_dir)
+    logger.info(f"Added {ddos_detection_dir} to sys.path")
+    
+    if os.path.exists(os.path.join(ddos_detection_dir, 'Codes')):
+        sys.path.append(os.path.join(ddos_detection_dir, 'Codes'))
+        sys.path.append(os.path.join(ddos_detection_dir, 'Codes', 'ml'))
+        logger.info(f"Added {os.path.join(ddos_detection_dir, 'Codes')} to sys.path")
+
+if os.path.exists(ddos_detection_mitigation_dir):
+    sys.path.append(ddos_detection_mitigation_dir)
+    logger.info(f"Added {ddos_detection_mitigation_dir} to sys.path")
+    
+    if os.path.exists(os.path.join(ddos_detection_mitigation_dir, 'Codes')):
+        sys.path.append(os.path.join(ddos_detection_mitigation_dir, 'Codes'))
+        sys.path.append(os.path.join(ddos_detection_mitigation_dir, 'Codes', 'ml'))
+        logger.info(f"Added {os.path.join(ddos_detection_mitigation_dir, 'Codes')} to sys.path")
 
 # Import ML modules
 try:
-    from Codes.ml.ML import MachineLearning
+    # Try different import paths
+    try:
+        import Codes.ml.ML
+        from Codes.ml.ML import MachineLearning
+        logger.info("Imported ML modules from Codes.ml.ML")
+    except ImportError:
+        logger.info("Failed to import from Codes.ml.ML, trying relative import")
+        import ML
+        from ML import MachineLearning
+        logger.info("Imported ML modules from ML")
+    
     logger.info("Successfully imported ML modules")
 except Exception as e:
     logger.error(f"Error importing ML modules: {e}")

@@ -48,7 +48,7 @@ else
 fi
 
 # Check if the repository directory already exists
-REPO_DIR="DDoS-Attack-Detection-and-Mitigation"
+REPO_DIR="DDoS-Attack-Detection"
 if [ -d "$REPO_DIR" ]; then
     echo -e "${YELLOW}Repository directory already exists. Checking for updates...${NC}"
     cd "$REPO_DIR"
@@ -58,7 +58,7 @@ if [ -d "$REPO_DIR" ]; then
 else
     # Clone the repository
     echo -e "${YELLOW}Cloning the repository...${NC}"
-    git clone https://github.com/chiragbiradar/DDoS-Attack-Detection-and-Mitigation.git
+    git clone https://github.com/chiragbiradar/DDoS-Attack-Detection.git
     
     if [ $? -eq 0 ]; then
         echo -e "${GREEN}Repository cloned successfully.${NC}"
@@ -70,14 +70,14 @@ fi
 
 # Create necessary directories
 echo -e "${YELLOW}Creating necessary directories...${NC}"
-mkdir -p DDoS-Attack-Detection-and-Mitigation/models
-mkdir -p DDoS-Attack-Detection-and-Mitigation/results
+mkdir -p ${REPO_DIR}/models
+mkdir -p ${REPO_DIR}/results
 echo -e "${GREEN}Directories created.${NC}"
 
 # Install Python dependencies
 echo -e "${YELLOW}Installing Python dependencies...${NC}"
 python3 -m pip install --upgrade pip
-python3 -m pip install -r requirements.txt
+python3 -m pip install flask flask-sqlalchemy gunicorn pandas numpy matplotlib scikit-learn tensorflow keras seaborn email-validator psycopg2-binary
 
 if [ $? -eq 0 ]; then
     echo -e "${GREEN}Dependencies installed successfully.${NC}"
