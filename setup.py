@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Setup script for DDoS Attack Detection and Mitigation repository.
+Setup script for DDoS Attack Detection repository.
 This script will clone the repository and set up the environment.
 """
 
@@ -15,8 +15,8 @@ from pathlib import Path
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 logger = logging.getLogger(__name__)
 
-REPO_URL = "https://github.com/chiragbiradar/DDoS-Attack-Detection-and-Mitigation.git"
-REPO_DIR = "DDoS-Attack-Detection-and-Mitigation"
+REPO_URL = "https://github.com/chiragbiradar/DDoS-Attack-Detection.git"
+REPO_DIR = "DDoS-Attack-Detection"
 
 def check_python_version():
     """Check if Python version is compatible."""
@@ -115,7 +115,7 @@ def validate_setup():
 
 def main():
     """Main function to run the setup."""
-    logger.info("Starting setup for DDoS Attack Detection and Mitigation...")
+    logger.info("Starting setup for DDoS Attack Detection...")
     
     # Check prerequisites
     check_python_version()

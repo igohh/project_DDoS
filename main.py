@@ -19,7 +19,7 @@ logging.basicConfig(level=logging.DEBUG)
 logger = logging.getLogger(__name__)
 
 # Add project directory to path
-repo_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'DDoS-Attack-Detection-and-Mitigation')
+repo_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'DDoS-Attack-Detection')
 sys.path.append(repo_dir)
 sys.path.append(os.path.join(repo_dir, 'Codes'))
 sys.path.append(os.path.join(repo_dir, 'Codes/ml'))

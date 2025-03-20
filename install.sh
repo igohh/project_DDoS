@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# DDoS Attack Detection and Mitigation - Installation Script
+# DDoS Attack Detection - Installation Script
 # This script installs all required dependencies and sets up the environment
 
 # Set up colors for output
@@ -11,7 +11,7 @@ YELLOW='\033[1;33m'
 NC='\033[0m' # No Color
 
 echo -e "${BLUE}=========================================================${NC}"
-echo -e "${BLUE}   DDoS Attack Detection and Mitigation - Installation   ${NC}"
+echo -e "${BLUE}   DDoS Attack Detection - Installation   ${NC}"
 echo -e "${BLUE}=========================================================${NC}"
 echo ""
 
