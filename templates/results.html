@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 
-{% block title %}Detection Results - DDoS Attack Detection and Mitigation{% endblock %}
+{% block title %}Detection Results - DDoS Attack Detection System{% endblock %}
 
 {% block content %}
 <div class="container">
@@ -132,8 +132,8 @@
                     </div>
                     
                     <div class="d-grid gap-2">
-                        <a href="{{ url_for('mitigation') }}" class="btn btn-danger mb-2">
-                            <i class="fas fa-shield-alt me-2"></i>Apply Mitigation
+                        <a href="{{ url_for('results') }}" class="btn btn-info mb-2">
+                            <i class="fas fa-history me-2"></i>View All Detection Results
                         </a>
                         <a href="{{ url_for('detection') }}" class="btn btn-outline-primary">
                             <i class="fas fa-search me-2"></i>Try Another Algorithm
