@@ -23,8 +23,11 @@ command_exists() {
 # Check Python version
 echo -e "${YELLOW}Checking Python version...${NC}"
 if command_exists python3; then
-    PYTHON_VERSION=$(python3 --version | grep -oP '(?<=Python )\d+\.\d+')
-    if (( $(echo "$PYTHON_VERSION >= 3.7" | bc -l) )); then
+    PYTHON_VERSION=$(python3 --version | cut -d' ' -f2)
+    PYTHON_MAJOR=$(echo $PYTHON_VERSION | cut -d'.' -f1)
+    PYTHON_MINOR=$(echo $PYTHON_VERSION | cut -d'.' -f2)
+    
+    if [ "$PYTHON_MAJOR" -ge 3 ] && [ "$PYTHON_MINOR" -ge 7 ]; then
         echo -e "${GREEN}Python $PYTHON_VERSION detected. Continuing...${NC}"
     else
         echo -e "${RED}Python $PYTHON_VERSION detected. Version 3.7 or higher is required.${NC}"
