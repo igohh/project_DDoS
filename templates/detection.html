@@ -68,20 +68,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <td>LR (Logistic Regression)</td>
-                                    <td>
-                                        <div class="progress">
-                                            <div class="progress-bar bg-info" role="progressbar" style="width: 75%"></div>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div class="progress">
-                                            <div class="progress-bar bg-success" role="progressbar" style="width: 90%"></div>
-                                        </div>
-                                    </td>
-                                    <td>Linear classification, binary outcomes</td>
-                                </tr>
+                                <!-- LR model removed as requested -->
                                 <tr>
                                     <td>KNN</td>
                                     <td>
@@ -110,20 +97,7 @@
                                     </td>
                                     <td>High-dimensional data, complex patterns</td>
                                 </tr>
-                                <tr>
-                                    <td>NB (Naive Bayes)</td>
-                                    <td>
-                                        <div class="progress">
-                                            <div class="progress-bar bg-info" role="progressbar" style="width: 70%"></div>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div class="progress">
-                                            <div class="progress-bar bg-success" role="progressbar" style="width: 95%"></div>
-                                        </div>
-                                    </td>
-                                    <td>Text classification, simple feature sets</td>
-                                </tr>
+                                <!-- NB model removed as requested -->
                                 <tr>
                                     <td>DT (Decision Tree)</td>
                                     <td>
@@ -191,10 +165,10 @@
                         </div>
                         <div class="col-md-3 mb-3 mb-md-0 text-center">
                             <div class="rounded-circle bg-danger text-white d-flex justify-content-center align-items-center mx-auto" style="width: 80px; height: 80px;">
-                                <i class="fas fa-shield-alt fa-2x"></i>
+                                <i class="fas fa-chart-pie fa-2x"></i>
                             </div>
-                            <h5 class="mt-3">Results & Action</h5>
-                            <p class="text-muted">Detection results and mitigation</p>
+                            <h5 class="mt-3">Results & Analysis</h5>
+                            <p class="text-muted">Detection results and detailed analytics</p>
                         </div>
                     </div>
                 </div>
@@ -211,12 +185,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const algorithmDetails = document.getElementById('algorithmDetails');
     
     const algorithmInfo = {
-        'LR': {
-            name: 'Logistic Regression',
-            description: 'A statistical method for analyzing a dataset where one or more independent variables determine an outcome. Used for binary classification problems.',
-            strengths: 'Fast training, works well with large datasets, less prone to overfitting.',
-            weaknesses: 'May underperform with complex non-linear relationships.'
-        },
+        // Only keeping the 4 highest-accuracy ML models
         'KNN': {
             name: 'K-Nearest Neighbors',
             description: 'A non-parametric method used for classification and regression. The output depends on the k closest training examples in the feature space.',
@@ -228,12 +197,6 @@ document.addEventListener('DOMContentLoaded', function() {
             description: 'A supervised learning model that analyzes data for classification and regression. It finds the optimal hyperplane that separates classes.',
             strengths: 'Effective in high-dimensional spaces, memory efficient, versatile with different kernel functions.',
             weaknesses: 'Not suitable for large datasets, computationally intensive.'
-        },
-        'NB': {
-            name: 'Naive Bayes',
-            description: 'A family of probabilistic algorithms based on applying Bayes\' theorem with strong independence assumptions between features.',
-            strengths: 'Fast training and prediction, works well with small datasets, handles missing data well.',
-            weaknesses: 'Assumes feature independence, which may not be realistic for network traffic.'
         },
         'DT': {
             name: 'Decision Tree',

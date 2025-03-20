@@ -96,7 +96,8 @@ def dashboard():
 
 @app.route('/detection')
 def detection():
-    ml_algorithms = ['LR', 'KNN', 'SVM', 'NB', 'DT', 'RF']
+    # Keeping only the 4 highest-accuracy ML models: RF, SVM, DT, KNN
+    ml_algorithms = ['KNN', 'SVM', 'DT', 'RF']
     return render_template('detection.html', ml_algorithms=ml_algorithms)
 
 @app.route('/run_detection', methods=['POST'])
@@ -193,49 +194,7 @@ def results():
 def documentation():
     return render_template('documentation.html')
 
-@app.route('/mitigation')
-def mitigation():
-    return render_template('mitigation.html')
-
-@app.route('/run_mitigation', methods=['POST'])
-def run_mitigation():
-    try:
-        mitigation_type = request.form.get('mitigation_type', 'rate_limiting')
-        threshold = request.form.get('threshold', '100')
-        
-        # In a real implementation, this would call actual mitigation code
-        logger.info(f"Running mitigation with type: {mitigation_type}, threshold: {threshold}")
-        
-        # Simulate mitigation
-        blocked_ips = [
-            f"192.168.1.{np.random.randint(1, 255)}" for _ in range(5)
-        ]
-        
-        # Store mitigation results in session
-        session['mitigation_results'] = {
-            'mitigation_type': mitigation_type,
-            'threshold': threshold,
-            'blocked_ips': blocked_ips,
-            'timestamp': datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-        }
-        
-        flash('Mitigation strategies applied successfully', 'success')
-        return redirect(url_for('mitigation_results'))
-    
-    except Exception as e:
-        logger.error(f"Error running mitigation: {e}")
-        flash(f'Error applying mitigation: {str(e)}', 'danger')
-        return redirect(url_for('mitigation'))
-
-@app.route('/mitigation_results')
-def mitigation_results():
-    mitigation_results = session.get('mitigation_results')
-    
-    if not mitigation_results:
-        flash('No mitigation results found. Please run mitigation first.', 'info')
-        return redirect(url_for('mitigation'))
-    
-    return render_template('mitigation_results.html', results=mitigation_results)
+# Mitigation module removed as requested
 
 @app.route('/about')
 def about():
