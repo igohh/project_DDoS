@@ -1,0 +1,259 @@
+{% extends 'base.html' %}
+
+{% block title %}Mitigation - DDoS Attack Detection and Mitigation{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row mb-4">
+        <div class="col-12">
+            <h1 class="mb-3">DDoS Attack Mitigation</h1>
+            <p class="lead">Configure and apply mitigation strategies to counter DDoS attacks.</p>
+            <hr>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-6 mb-4">
+            <div class="card shadow mb-4">
+                <div class="card-header py-3 d-flex justify-content-between align-items-center">
+                    <h6 class="m-0 font-weight-bold text-primary">Configure Mitigation</h6>
+                    <span class="badge bg-danger">Defense</span>
+                </div>
+                <div class="card-body">
+                    <p>Set up defensive measures to counter detected DDoS attacks.</p>
+                    
+                    <form action="{{ url_for('run_mitigation') }}" method="post">
+                        <div class="mb-3">
+                            <label for="mitigation_type" class="form-label">Mitigation Strategy</label>
+                            <select class="form-select" id="mitigation_type" name="mitigation_type" required>
+                                <option value="" selected disabled>-- Select a strategy --</option>
+                                <option value="rate_limiting">Rate Limiting</option>
+                                <option value="connection_limiting">Connection Limiting</option>
+                                <option value="ip_blocking">IP Blocking</option>
+                                <option value="traffic_filtering">Traffic Filtering</option>
+                                <option value="captcha_challenge">CAPTCHA Challenge</option>
+                            </select>
+                            <div class="form-text">Choose the appropriate strategy based on attack type.</div>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="threshold" class="form-label">Threshold Value</label>
+                            <input type="number" class="form-control" id="threshold" name="threshold" 
+                                   min="1" max="1000" value="100" required>
+                            <div class="form-text">Set the threshold for triggering mitigation (e.g., connections per second).</div>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label class="form-label">Strategy Details</label>
+                            <div id="strategyDetails" class="p-3 bg-light rounded">
+                                <p class="text-muted mb-0">Select a strategy to view details</p>
+                            </div>
+                        </div>
+                        
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-danger">
+                                <i class="fas fa-shield-alt me-2"></i>Apply Mitigation
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-lg-6 mb-4">
+            <div class="card shadow mb-4">
+                <div class="card-header py-3">
+                    <h6 class="m-0 font-weight-bold text-primary">Mitigation Strategies</h6>
+                </div>
+                <div class="card-body">
+                    <div class="accordion" id="mitigationAccordion">
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="headingRateLimiting">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" 
+                                        data-bs-target="#collapseRateLimiting" aria-expanded="false" aria-controls="collapseRateLimiting">
+                                    Rate Limiting
+                                </button>
+                            </h2>
+                            <div id="collapseRateLimiting" class="accordion-collapse collapse" aria-labelledby="headingRateLimiting" 
+                                 data-bs-parent="#mitigationAccordion">
+                                <div class="accordion-body">
+                                    <p><strong>Description:</strong> Limits the number of requests a source can make in a given time period.</p>
+                                    <p><strong>Effectiveness:</strong> Highly effective against most volumetric attacks.</p>
+                                    <p><strong>Performance Impact:</strong> Low to medium depending on implementation.</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="headingConnectionLimiting">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" 
+                                        data-bs-target="#collapseConnectionLimiting" aria-expanded="false" aria-controls="collapseConnectionLimiting">
+                                    Connection Limiting
+                                </button>
+                            </h2>
+                            <div id="collapseConnectionLimiting" class="accordion-collapse collapse" aria-labelledby="headingConnectionLimiting" 
+                                 data-bs-parent="#mitigationAccordion">
+                                <div class="accordion-body">
+                                    <p><strong>Description:</strong> Restricts the number of concurrent connections from a single source.</p>
+                                    <p><strong>Effectiveness:</strong> Effective against TCP-based attacks like SYN floods.</p>
+                                    <p><strong>Performance Impact:</strong> Low when properly configured.</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="headingIPBlocking">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" 
+                                        data-bs-target="#collapseIPBlocking" aria-expanded="false" aria-controls="collapseIPBlocking">
+                                    IP Blocking
+                                </button>
+                            </h2>
+                            <div id="collapseIPBlocking" class="accordion-collapse collapse" aria-labelledby="headingIPBlocking" 
+                                 data-bs-parent="#mitigationAccordion">
+                                <div class="accordion-body">
+                                    <p><strong>Description:</strong> Blocks traffic from specific IP addresses or ranges identified as malicious.</p>
+                                    <p><strong>Effectiveness:</strong> Very effective for attacks from limited sources but less so for distributed attacks.</p>
+                                    <p><strong>Performance Impact:</strong> Very low.</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="headingTrafficFiltering">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" 
+                                        data-bs-target="#collapseTrafficFiltering" aria-expanded="false" aria-controls="collapseTrafficFiltering">
+                                    Traffic Filtering
+                                </button>
+                            </h2>
+                            <div id="collapseTrafficFiltering" class="accordion-collapse collapse" aria-labelledby="headingTrafficFiltering" 
+                                 data-bs-parent="#mitigationAccordion">
+                                <div class="accordion-body">
+                                    <p><strong>Description:</strong> Analyzes and filters traffic based on packet properties and signatures.</p>
+                                    <p><strong>Effectiveness:</strong> Highly effective against known attack patterns.</p>
+                                    <p><strong>Performance Impact:</strong> Medium to high depending on complexity.</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="headingCaptchaChallenge">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" 
+                                        data-bs-target="#collapseCaptchaChallenge" aria-expanded="false" aria-controls="collapseCaptchaChallenge">
+                                    CAPTCHA Challenge
+                                </button>
+                            </h2>
+                            <div id="collapseCaptchaChallenge" class="accordion-collapse collapse" aria-labelledby="headingCaptchaChallenge" 
+                                 data-bs-parent="#mitigationAccordion">
+                                <div class="accordion-body">
+                                    <p><strong>Description:</strong> Presents CAPTCHA challenges to verify human users during suspected attacks.</p>
+                                    <p><strong>Effectiveness:</strong> Effective against application-layer attacks and bot networks.</p>
+                                    <p><strong>Performance Impact:</strong> Low for systems, high for user experience.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-12 mb-4">
+            <div class="card shadow mb-4">
+                <div class="card-header py-3">
+                    <h6 class="m-0 font-weight-bold text-primary">Mitigation Workflow</h6>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-3 mb-3 mb-md-0 text-center">
+                            <div class="rounded-circle bg-primary text-white d-flex justify-content-center align-items-center mx-auto" style="width: 80px; height: 80px;">
+                                <i class="fas fa-search fa-2x"></i>
+                            </div>
+                            <h5 class="mt-3">Attack Detection</h5>
+                            <p class="text-muted">Identify attack patterns</p>
+                        </div>
+                        <div class="col-md-3 mb-3 mb-md-0 text-center">
+                            <div class="rounded-circle bg-warning text-white d-flex justify-content-center align-items-center mx-auto" style="width: 80px; height: 80px;">
+                                <i class="fas fa-exclamation-triangle fa-2x"></i>
+                            </div>
+                            <h5 class="mt-3">Alert Generation</h5>
+                            <p class="text-muted">Trigger alerts and notifications</p>
+                        </div>
+                        <div class="col-md-3 mb-3 mb-md-0 text-center">
+                            <div class="rounded-circle bg-danger text-white d-flex justify-content-center align-items-center mx-auto" style="width: 80px; height: 80px;">
+                                <i class="fas fa-shield-alt fa-2x"></i>
+                            </div>
+                            <h5 class="mt-3">Mitigation Application</h5>
+                            <p class="text-muted">Apply defensive measures</p>
+                        </div>
+                        <div class="col-md-3 mb-3 mb-md-0 text-center">
+                            <div class="rounded-circle bg-success text-white d-flex justify-content-center align-items-center mx-auto" style="width: 80px; height: 80px;">
+                                <i class="fas fa-chart-line fa-2x"></i>
+                            </div>
+                            <h5 class="mt-3">Monitoring & Adjustment</h5>
+                            <p class="text-muted">Track effectiveness and adjust</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const mitigationSelect = document.getElementById('mitigation_type');
+    const strategyDetails = document.getElementById('strategyDetails');
+    
+    const strategyInfo = {
+        'rate_limiting': {
+            name: 'Rate Limiting',
+            description: 'Limits the number of requests a source can make in a given time period.',
+            implementation: 'Implements token bucket or leaky bucket algorithms to control traffic flow.',
+            threshold: 'Threshold represents the maximum number of requests allowed per second.'
+        },
+        'connection_limiting': {
+            name: 'Connection Limiting',
+            description: 'Restricts the number of concurrent connections from a single source.',
+            implementation: 'Configures the network to limit the number of TCP connections per client IP.',
+            threshold: 'Threshold represents the maximum number of concurrent connections allowed.'
+        },
+        'ip_blocking': {
+            name: 'IP Blocking',
+            description: 'Blocks traffic from specific IP addresses or ranges identified as malicious.',
+            implementation: 'Creates firewall rules or access control lists to drop packets from malicious IPs.',
+            threshold: 'Threshold represents the number of suspicious requests before an IP is blocked.'
+        },
+        'traffic_filtering': {
+            name: 'Traffic Filtering',
+            description: 'Analyzes and filters traffic based on packet properties and signatures.',
+            implementation: 'Uses deep packet inspection to identify and filter malicious traffic patterns.',
+            threshold: 'Threshold represents the sensitivity level of the filtering mechanism.'
+        },
+        'captcha_challenge': {
+            name: 'CAPTCHA Challenge',
+            description: 'Presents CAPTCHA challenges to verify human users during suspected attacks.',
+            implementation: 'Integrates CAPTCHA services into application endpoints during attack scenarios.',
+            threshold: 'Threshold represents the suspicious activity level that triggers CAPTCHA challenges.'
+        }
+    };
+    
+    mitigationSelect.addEventListener('change', function() {
+        const selectedStrategy = this.value;
+        if (selectedStrategy && strategyInfo[selectedStrategy]) {
+            const info = strategyInfo[selectedStrategy];
+            strategyDetails.innerHTML = `
+                <h5>${info.name}</h5>
+                <p><strong>Description:</strong> ${info.description}</p>
+                <p><strong>Implementation:</strong> ${info.implementation}</p>
+                <p><strong>Threshold Usage:</strong> ${info.threshold}</p>
+            `;
+        } else {
+            strategyDetails.innerHTML = '<p class="text-muted mb-0">Select a strategy to view details</p>';
+        }
+    });
+});
+</script>
+{% endblock %}

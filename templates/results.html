@@ -1,0 +1,340 @@
+{% extends 'base.html' %}
+
+{% block title %}Detection Results - DDoS Attack Detection and Mitigation{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row mb-4">
+        <div class="col-12">
+            <h1 class="mb-3">Detection Results</h1>
+            <p class="lead">View and analyze the results of DDoS attack detection.</p>
+            <hr>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-8 mb-4">
+            <div class="card shadow mb-4">
+                <div class="card-header py-3 d-flex justify-content-between align-items-center">
+                    <h6 class="m-0 font-weight-bold text-primary">Detection Summary</h6>
+                    <span class="badge bg-success">Completed</span>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive mb-4">
+                        <table class="table table-bordered">
+                            <tbody>
+                                <tr>
+                                    <th style="width: 30%">Algorithm</th>
+                                    <td>
+                                        <span class="badge bg-primary">{{ results.algorithm }}</span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>Timestamp</th>
+                                    <td>{{ results.timestamp }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Accuracy</th>
+                                    <td>
+                                        <div class="d-flex align-items-center">
+                                            <div class="progress flex-grow-1 me-2" style="height: 10px;">
+                                                <div class="progress-bar bg-success" role="progressbar" 
+                                                    style="width: {{ results.metrics.accuracy }}%;" 
+                                                    aria-valuenow="{{ results.metrics.accuracy }}" 
+                                                    aria-valuemin="0" aria-valuemax="100">
+                                                </div>
+                                            </div>
+                                            <span>{{ results.metrics.accuracy|round(2) }}%</span>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>Precision</th>
+                                    <td>
+                                        <div class="d-flex align-items-center">
+                                            <div class="progress flex-grow-1 me-2" style="height: 10px;">
+                                                <div class="progress-bar bg-info" role="progressbar" 
+                                                    style="width: {{ results.metrics.precision }}%;" 
+                                                    aria-valuenow="{{ results.metrics.precision }}" 
+                                                    aria-valuemin="0" aria-valuemax="100">
+                                                </div>
+                                            </div>
+                                            <span>{{ results.metrics.precision|round(2) }}%</span>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>Recall</th>
+                                    <td>
+                                        <div class="d-flex align-items-center">
+                                            <div class="progress flex-grow-1 me-2" style="height: 10px;">
+                                                <div class="progress-bar bg-warning" role="progressbar" 
+                                                    style="width: {{ results.metrics.recall }}%;" 
+                                                    aria-valuenow="{{ results.metrics.recall }}" 
+                                                    aria-valuemin="0" aria-valuemax="100">
+                                                </div>
+                                            </div>
+                                            <span>{{ results.metrics.recall|round(2) }}%</span>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>F1 Score</th>
+                                    <td>
+                                        <div class="d-flex align-items-center">
+                                            <div class="progress flex-grow-1 me-2" style="height: 10px;">
+                                                <div class="progress-bar bg-primary" role="progressbar" 
+                                                    style="width: {{ results.metrics.f1_score }}%;" 
+                                                    aria-valuenow="{{ results.metrics.f1_score }}" 
+                                                    aria-valuemin="0" aria-valuemax="100">
+                                                </div>
+                                            </div>
+                                            <span>{{ results.metrics.f1_score|round(2) }}%</span>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <h5 class="font-weight-bold mb-3">Confusion Matrix</h5>
+                    <div class="text-center mb-4">
+                        <img src="data:image/png;base64,{{ confusion_plot }}" alt="Confusion Matrix" class="img-fluid">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-4 mb-4">
+            <div class="card shadow mb-4">
+                <div class="card-header py-3">
+                    <h6 class="m-0 font-weight-bold text-primary">Performance Analysis</h6>
+                </div>
+                <div class="card-body">
+                    <div class="text-center mb-4">
+                        <div class="mb-3" style="height: 200px; width: 200px; margin: 0 auto;">
+                            <canvas id="performanceChart"></canvas>
+                        </div>
+                        <h4 class="font-weight-bold text-success">
+                            {% if results.metrics.accuracy > 90 %}
+                                Excellent
+                            {% elif results.metrics.accuracy > 80 %}
+                                Very Good
+                            {% elif results.metrics.accuracy > 70 %}
+                                Good
+                            {% elif results.metrics.accuracy > 60 %}
+                                Average
+                            {% else %}
+                                Poor
+                            {% endif %}
+                        </h4>
+                        <p class="text-muted">Overall algorithm performance</p>
+                    </div>
+                    
+                    <div class="d-grid gap-2">
+                        <a href="{{ url_for('mitigation') }}" class="btn btn-danger mb-2">
+                            <i class="fas fa-shield-alt me-2"></i>Apply Mitigation
+                        </a>
+                        <a href="{{ url_for('detection') }}" class="btn btn-outline-primary">
+                            <i class="fas fa-search me-2"></i>Try Another Algorithm
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-12 mb-4">
+            <div class="card shadow mb-4">
+                <div class="card-header py-3">
+                    <h6 class="m-0 font-weight-bold text-primary">Algorithm Insights</h6>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-4 mb-3">
+                            <div class="card h-100 border-left-primary">
+                                <div class="card-body">
+                                    <h5 class="card-title">Strengths</h5>
+                                    <ul class="ps-4">
+                                        {% if results.algorithm == 'LR' %}
+                                            <li>Fast training and prediction speed</li>
+                                            <li>Works well with large datasets</li>
+                                            <li>Less prone to overfitting</li>
+                                        {% elif results.algorithm == 'KNN' %}
+                                            <li>No training phase required</li>
+                                            <li>Effective with labeled data</li>
+                                            <li>Adaptable to different domains</li>
+                                        {% elif results.algorithm == 'SVM' %}
+                                            <li>Effective in high-dimensional spaces</li>
+                                            <li>Memory efficient</li>
+                                            <li>Versatile with different kernel functions</li>
+                                        {% elif results.algorithm == 'NB' %}
+                                            <li>Fast training and prediction</li>
+                                            <li>Works well with small datasets</li>
+                                            <li>Handles missing data well</li>
+                                        {% elif results.algorithm == 'DT' %}
+                                            <li>Easy to understand and interpret</li>
+                                            <li>Handles numerical and categorical data</li>
+                                            <li>Requires minimal data preprocessing</li>
+                                        {% elif results.algorithm == 'RF' %}
+                                            <li>High accuracy</li>
+                                            <li>Handles large datasets efficiently</li>
+                                            <li>Reduces overfitting</li>
+                                        {% else %}
+                                            <li>Efficient processing of large datasets</li>
+                                            <li>Good detection accuracy</li>
+                                            <li>Adaptable to different attack patterns</li>
+                                        {% endif %}
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <div class="card h-100 border-left-warning">
+                                <div class="card-body">
+                                    <h5 class="card-title">Limitations</h5>
+                                    <ul class="ps-4">
+                                        {% if results.algorithm == 'LR' %}
+                                            <li>May underperform with complex non-linear relationships</li>
+                                            <li>Limited to binary classification</li>
+                                            <li>Sensitive to outliers</li>
+                                        {% elif results.algorithm == 'KNN' %}
+                                            <li>Computationally intensive for large datasets</li>
+                                            <li>Sensitive to irrelevant features</li>
+                                            <li>Requires feature scaling</li>
+                                        {% elif results.algorithm == 'SVM' %}
+                                            <li>Not suitable for large datasets</li>
+                                            <li>Computationally intensive</li>
+                                            <li>Sensitive to kernel choice</li>
+                                        {% elif results.algorithm == 'NB' %}
+                                            <li>Assumes feature independence</li>
+                                            <li>Not ideal for numerical predictions</li>
+                                            <li>Can be outperformed by more complex models</li>
+                                        {% elif results.algorithm == 'DT' %}
+                                            <li>Can create overly complex trees</li>
+                                            <li>Prone to overfitting</li>
+                                            <li>May be unstable with small data changes</li>
+                                        {% elif results.algorithm == 'RF' %}
+                                            <li>More complex than single decision trees</li>
+                                            <li>Slower training time</li>
+                                            <li>Less interpretable than simple models</li>
+                                        {% else %}
+                                            <li>May require significant computational resources</li>
+                                            <li>Could generate false positives</li>
+                                            <li>Requires periodic retraining</li>
+                                        {% endif %}
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <div class="card h-100 border-left-success">
+                                <div class="card-body">
+                                    <h5 class="card-title">Recommendations</h5>
+                                    <ul class="ps-4">
+                                        {% if results.algorithm == 'LR' %}
+                                            <li>Consider for baseline comparison</li>
+                                            <li>Use when interpretability is important</li>
+                                            <li>Combine with feature engineering</li>
+                                        {% elif results.algorithm == 'KNN' %}
+                                            <li>Optimize k value for better performance</li>
+                                            <li>Use dimensionality reduction techniques</li>
+                                            <li>Consider weighted KNN for imbalanced data</li>
+                                        {% elif results.algorithm == 'SVM' %}
+                                            <li>Experiment with different kernel functions</li>
+                                            <li>Optimize hyperparameters</li>
+                                            <li>Use for complex non-linear boundaries</li>
+                                        {% elif results.algorithm == 'NB' %}
+                                            <li>Use for quick initial classification</li>
+                                            <li>Combine with feature selection</li>
+                                            <li>Consider ensemble methods for improvement</li>
+                                        {% elif results.algorithm == 'DT' %}
+                                            <li>Prune trees to prevent overfitting</li>
+                                            <li>Use for feature importance analysis</li>
+                                            <li>Consider ensemble methods for better performance</li>
+                                        {% elif results.algorithm == 'RF' %}
+                                            <li>Optimize number of trees and depth</li>
+                                            <li>Use for production environments</li>
+                                            <li>Balance performance and computational cost</li>
+                                        {% else %}
+                                            <li>Fine-tune algorithm parameters</li>
+                                            <li>Regularly update the model with new data</li>
+                                            <li>Consider ensemble approaches</li>
+                                        {% endif %}
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Get metrics from the results
+    const accuracy = {{ results.metrics.accuracy }};
+    const precision = {{ results.metrics.precision }};
+    const recall = {{ results.metrics.recall }};
+    const f1Score = {{ results.metrics.f1_score }};
+    
+    // Create performance chart
+    const ctx = document.getElementById('performanceChart').getContext('2d');
+    const performanceChart = new Chart(ctx, {
+        type: 'radar',
+        data: {
+            labels: ['Accuracy', 'Precision', 'Recall', 'F1 Score'],
+            datasets: [{
+                label: 'Performance Metrics',
+                data: [accuracy, precision, recall, f1Score],
+                backgroundColor: 'rgba(78, 115, 223, 0.2)',
+                borderColor: 'rgba(78, 115, 223, 1)',
+                borderWidth: 2,
+                pointBackgroundColor: 'rgba(78, 115, 223, 1)',
+                pointBorderColor: '#fff',
+                pointHoverBackgroundColor: '#fff',
+                pointHoverBorderColor: 'rgba(78, 115, 223, 1)'
+            }]
+        },
+        options: {
+            scales: {
+                r: {
+                    angleLines: {
+                        display: true
+                    },
+                    suggestedMin: 0,
+                    suggestedMax: 100
+                }
+            },
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    display: false
+                }
+            }
+        }
+    });
+});
+</script>
+{% endblock %}
+
+{% block extra_css %}
+<style>
+    .border-left-primary {
+        border-left: 0.25rem solid #4e73df !important;
+    }
+    .border-left-success {
+        border-left: 0.25rem solid #1cc88a !important;
+    }
+    .border-left-warning {
+        border-left: 0.25rem solid #f6c23e !important;
+    }
+</style>
+{% endblock %}

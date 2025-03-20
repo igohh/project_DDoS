@@ -1,0 +1,222 @@
+/* DDoS Attack Detection and Mitigation - Custom Styles */
+
+/* General Styles */
+:root {
+    --primary: #4e73df;
+    --success: #1cc88a;
+    --info: #36b9cc;
+    --warning: #f6c23e;
+    --danger: #e74a3b;
+    --secondary: #858796;
+    --light: #f8f9fc;
+    --dark: #5a5c69;
+}
+
+body {
+    font-family: 'Nunito', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    background-color: #f8f9fc;
+}
+
+/* Navigation */
+.navbar-brand i {
+    margin-right: 0.5rem;
+}
+
+/* Cards */
+.card {
+    border: none;
+    border-radius: 0.35rem;
+    box-shadow: 0 0.15rem 1.75rem 0 rgba(58, 59, 69, 0.15);
+    margin-bottom: 1.5rem;
+}
+
+.card-header {
+    background-color: #f8f9fc;
+    border-bottom: 1px solid #e3e6f0;
+}
+
+.card .font-weight-bold {
+    font-weight: 700 !important;
+}
+
+/* Feature Icons */
+.feature-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 3rem;
+    height: 3rem;
+    font-size: 1.5rem;
+    border-radius: 50%;
+}
+
+/* Buttons */
+.btn {
+    font-weight: 500;
+    border-radius: 0.35rem;
+    padding: 0.375rem 0.75rem;
+    transition: all 0.2s;
+}
+
+.btn-primary {
+    background-color: var(--primary);
+    border-color: var(--primary);
+}
+
+.btn-success {
+    background-color: var(--success);
+    border-color: var(--success);
+}
+
+.btn-danger {
+    background-color: var(--danger);
+    border-color: var(--danger);
+}
+
+.btn-primary:hover, .btn-success:hover, .btn-danger:hover {
+    filter: brightness(0.9);
+}
+
+/* Card Hover Effects */
+.shadow-sm {
+    transition: all 0.3s;
+}
+
+.shadow-sm:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15) !important;
+}
+
+/* Bordered Cards */
+.border-left-primary {
+    border-left: 0.25rem solid var(--primary) !important;
+}
+
+.border-left-success {
+    border-left: 0.25rem solid var(--success) !important;
+}
+
+.border-left-info {
+    border-left: 0.25rem solid var(--info) !important;
+}
+
+.border-left-warning {
+    border-left: 0.25rem solid var(--warning) !important;
+}
+
+.border-left-danger {
+    border-left: 0.25rem solid var(--danger) !important;
+}
+
+/* Text Colors */
+.text-gray-300 {
+    color: #dddfeb !important;
+}
+
+.text-gray-800 {
+    color: #5a5c69 !important;
+}
+
+/* Footer */
+footer {
+    margin-top: 2rem;
+}
+
+footer a:hover {
+    text-decoration: underline;
+}
+
+/* Documentation Timeline */
+.timeline {
+    position: relative;
+    padding-left: 30px;
+}
+
+.timeline::before {
+    content: '';
+    position: absolute;
+    left: 9px;
+    top: 0;
+    height: 100%;
+    width: 2px;
+    background-color: #e0e0e0;
+}
+
+.timeline-item {
+    position: relative;
+    margin-bottom: 25px;
+}
+
+.timeline-marker {
+    position: absolute;
+    left: -30px;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    top: 3px;
+}
+
+.timeline-content {
+    padding-bottom: 10px;
+}
+
+/* Dashboard Progress Bars */
+.progress {
+    height: 0.5rem;
+    border-radius: 0.25rem;
+    background-color: #eaecf4;
+    margin-right: 0.5rem;
+}
+
+/* Print Styles */
+@media print {
+    .navbar, footer, button, .btn, .no-print {
+        display: none !important;
+    }
+    .card {
+        break-inside: avoid;
+    }
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+    .display-4 {
+        font-size: 2rem;
+    }
+    .lead {
+        font-size: 1rem;
+    }
+}
+
+/* Documentation Sidebar */
+.sticky-top {
+    top: 2rem;
+    z-index: 100;
+}
+
+/* Error Pages */
+.error-template {
+    padding: 40px 15px;
+    text-align: center;
+}
+
+.error-actions {
+    margin-top: 15px;
+    margin-bottom: 15px;
+}
+
+/* Charts */
+canvas {
+    max-width: 100%;
+}
+
+/* Detection Algorithm Comparison Table */
+.progress-bar {
+    transition: width 1s ease-in-out;
+}
+
+/* Mitigation Page */
+.accordion-button:not(.collapsed) {
+    background-color: rgba(78, 115, 223, 0.1);
+    color: var(--primary);
+}
